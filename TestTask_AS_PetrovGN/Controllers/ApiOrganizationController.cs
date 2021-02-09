@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TestTask_AS_PetrovGN.Model;
@@ -29,14 +30,22 @@ namespace TestTask_AS_PetrovGN.Controllers
 
         public async Task<List<DepartmentVM>> GetAllDepartments()
         {
-            return await db.Departments.Select(e=>new DepartmentVM 
+            try
             {
-                Employees = e.Employees, 
-                Id = e.Id, 
-                Title =e.Title, 
-                MidSalary = e.Employees.Average(x=>x.Salary), 
-                EmployeeCount = e.Employees.Count() 
-            }).ToListAsync();
+                return await db.Departments.Include(e => e.Employees).Select(e => new DepartmentVM
+                {
+                    Employees = e.Employees,
+                    Id = e.Id,
+                    Title = e.Title,
+                    MidSalary = e.Employees.Any() ? e.Employees.Average(x => x.Salary) : 0,
+                    EmployeeCount = e.Employees.Count()
+                }).ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("w");
+                return null;
+            }
         }
 
         public async Task<StatusCodeResult> AddEmployee(Employee employee)
