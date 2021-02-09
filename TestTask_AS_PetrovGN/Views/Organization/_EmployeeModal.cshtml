@@ -1,0 +1,14 @@
+﻿@model TestTask_AS_PetrovGN.Model.Employee
+
+    <div class="modal1">
+        <form action="/ApiOrganization/UpdateEmployee" method="post">
+            <h3>Строудник № @Model.Id</h3>
+            <div class="my-label">Имя</div>
+            <input class="my-input" type="text" name="Name" value="@Model.Name" />
+            <div class="my-label">Зарплатушка</div>
+            <input class="my-input" type="text" name="Salary" value="@Model.Salary" /><br>
+            <input type="hidden" name="DepartmentId" value="@Model.DepartmentId" />
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input type="submit" class="my-btn btn-green" value="Сохранить" />
+        </form>
+    </div>
